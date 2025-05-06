@@ -1,0 +1,28 @@
+/* สไตล์สำหรับหน้าล็อกอินและลงทะเบียน */
+
+/* ปุ่ม (Button) สำหรับหน้าล็อกอิน */
+.auth-card .btn {
+    width: 100%;
+    padding: 14px;
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #2b6cb0, #4299e1);
+    transition: all 0.3s;
+    cursor: pointer;
+    border: none;
+    color: white;
+    box-shadow: 0 4px 15px rgba(66, 153, 225, 0.25);
+}
+
+.auth-card .btn:hover {
+    background: linear-gradient(135deg, #2c5282, #2b6cb0);
+    box-shadow: 0 6px 20px rgba(43, 108, 176, 0.3);
+}
+
+.auth-card .btn:active {
+    box-shadow: 0 2px 10px rgba(43, 108, 176, 0.2);
+}

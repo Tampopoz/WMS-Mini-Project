@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>หน้าหลัก - WMS</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+</head>
+<body>
+<header>
+  <nav>
+    <h1>WMS - Warehouse Management System</h1>
+    <div class="nav-links">
+      <a href="/index.html">หน้าหลัก</a>
+      <a href="/admin/users.html" id="admin-link" style="display: none;">จัดการผู้ใช้งาน</a>
+      <a href="/products.html">จัดการสินค้า</a>
+      <a href="/locations.html">จัดการตำแหน่งจัดเก็บ</a>
+      <a href="/inbound.html">รับสินค้าเข้าคลัง</a>
+      <a href="/outbound.html">ส่งออกสินค้า</a>
+      <a href="/transfers.html">โอนย้ายสินค้า</a>
+      <a href="#" id="logout-btn">ออกจากระบบ</a>
+    </div>
+  </nav>
+</header>
+
+<main class="container">
+  <h2>แดชบอร์ด</h2>
+
+  <div class="dashboard-stats">
+    <div class="stat-card">
+      <h3>จำนวนสินค้าทั้งหมด</h3>
+      <div class="number" id="total-products">0</div>
+      <p>รายการ</p>
+    </div>
+    <div class="stat-card">
+      <h3>สินค้าใกล้หมด</h3>
+      <div class="number" id="low-stock-products">0</div>
+      <p>รายการ</p>
+    </div>
+    <div class="stat-card">
+      <h3>ตำแหน่งจัดเก็บทั้งหมด</h3>
+      <div class="number" id="total-locations">0</div>
+      <p>ตำแหน่ง</p>
+    </div>
+    <div class="stat-card">
+      <h3>ตำแหน่งว่าง</h3>
+      <div class="number" id="available-locations">0</div>
+      <p>ตำแหน่ง</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>การแจ้งเตือน</h3>
+    <div class="alerts" id="alerts-container">
+      <h4>สินค้าใกล้หมด</h4>
+      <ul id="low-stock-alerts">
+        <!-- Low stock alerts will be loaded here -->
+      </ul>
+    </div>
+  </div>
+
+  <div class="dashboard-rows">
+    <!-- เพิ่มบล็อกแสดงข้อมูลการรับสินค้าล่าสุด -->
+    <div class="card">
+      <h3>การรับสินค้าล่าสุด</h3>
+      <div class="recent-inbound" id="recent-inbound-container">
+        <!-- ข้อมูลการรับสินค้าล่าสุดจะถูกโหลดที่นี่ -->
+        <p class="loading-text">กำลังโหลดข้อมูล...</p>
+      </div>
+    </div>
+
+    <!-- เพิ่มบล็อกแสดงข้อมูลการส่งออกสินค้าล่าสุด -->
+    <div class="card">
+      <h3>การส่งออกสินค้าล่าสุด</h3>
+      <div class="recent-outbound" id="recent-outbound-container">
+        <!-- ข้อมูลการส่งออกสินค้าล่าสุดจะถูกโหลดที่นี่ -->
+        <p class="loading-text">กำลังโหลดข้อมูล...</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>เมนูลัด</h3>
+    <div class="quick-actions">
+      <a href="/products.html" class="action-btn">จัดการสินค้า</a>
+      <a href="/locations.html" class="action-btn">จัดการตำแหน่งจัดเก็บ</a>
+      <a href="/inbound.html" class="action-btn">รับสินค้าเข้าคลัง</a>
+      <a href="/outbound.html" class="action-btn">ส่งออกสินค้า</a>
+      <a href="/admin/users.html" class="action-btn admin-only" style="display: none;">จัดการผู้ใช้งาน</a>
+    </div>
+  </div>
+</main>
+
+<script src="/js/main.js"></script>
+<script src="/js/dashboard.js"></script>
+</body>
+</html>

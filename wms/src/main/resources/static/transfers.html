@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>จัดการการโอนย้ายสินค้า - WMS</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+</head>
+<body>
+<header>
+    <nav>
+        <h1>WMS - Warehouse Management System</h1>
+        <div class="nav-links">
+            <a href="/index.html">หน้าหลัก</a>
+            <a href="/admin/users.html" id="admin-link" style="display: none;">จัดการผู้ใช้งาน</a>
+            <a href="/products.html">จัดการสินค้า</a>
+            <a href="/locations.html">จัดการตำแหน่งจัดเก็บ</a>
+            <a href="/inbound.html">รับสินค้าเข้าคลัง</a>
+            <a href="/outbound.html">ส่งออกสินค้า</a>
+            <a href="/transfers.html">โอนย้ายสินค้า</a>
+            <a href="#" id="logout-btn">ออกจากระบบ</a>
+        </div>
+    </nav>
+</header>
+
+<main class="container">
+    <h2>จัดการการโอนย้ายสินค้า</h2>
+
+    <div class="card">
+        <div class="search-container">
+            <h3>ประวัติการโอนย้ายสินค้า</h3>
+            <div class="actions-bar">
+                <input type="text" id="search-keyword" placeholder="ค้นหาตามชื่อสินค้า...">
+                <button class="btn" onclick="searchTransfers()">ค้นหา</button>
+                <button class="btn" onclick="loadTransfers()">แสดงทั้งหมด</button>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table id="transfers-table">
+                <thead>
+                <tr>
+                    <th>สินค้า</th>
+                    <th>จำนวน</th>
+                    <th>จาก</th>
+                    <th>ไปยัง</th>
+                    <th>วันที่โอนย้าย</th>
+                    <th>ผู้ทำรายการ</th>
+                    <th>หมายเหตุ</th>
+                    <th>การจัดการ</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- ข้อมูลการโอนย้ายจะถูกโหลดที่นี่ -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>ทำรายการโอนย้ายสินค้าใหม่</h3>
+        <div class="error-message" id="add-transfer-error" style="display: none;"></div>
+        <form id="add-transfer-form">
+            <div class="form-group">
+                <label for="product-select">เลือกสินค้า</label>
+                <select id="product-select" required onchange="handleProductSelect()">
+                    <option value="">-- เลือกสินค้า --</option>
+                    <!-- ตัวเลือกสินค้าจะถูกโหลดจาก JavaScript -->
+                </select>
+                <div class="error-message" id="product-select-error" style="display: none;"></div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="product">สินค้า</label>
+                    <input type="hidden" id="product-id" name="product-id">
+                    <input type="text" id="product" name="product" readonly>
+                </div>
+                <div class="form-group">
+                    <label>จำนวนคงเหลือปัจจุบัน</label>
+                    <input type="text" id="current-stock" readonly>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="from-location">ตำแหน่งต้นทาง</label>
+                    <input type="text" id="from-location" name="from-location" readonly>
+                    <div class="error-message" id="from-location-error" style="display: none;"></div>
+                </div>
+                <div class="form-group">
+                    <label for="to-location">ตำแหน่งปลายทาง</label>
+                    <select id="to-location" name="to-location" required>
+                        <option value="">-- เลือกตำแหน่งปลายทาง --</option>
+                        <!-- ตัวเลือกตำแหน่งจะถูกโหลดจาก JavaScript -->
+                    </select>
+                    <div class="error-message" id="to-location-error" style="display: none;"></div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="quantity">จำนวนที่โอนย้าย</label>
+                    <input type="number" id="quantity" name="quantity" min="1" required>
+                    <div class="error-message" id="quantity-error" style="display: none;"></div>
+                </div>
+                <div class="form-group">
+                    <label for="notes">หมายเหตุ</label>
+                    <input type="text" id="notes" name="notes">
+                </div>
+            </div>
+
+            <button type="submit" class="btn">ทำรายการโอนย้าย</button>
+        </form>
+    </div>
+
+    <!-- แก้ไขข้อมูลการโอนย้าย Modal -->
+    <div id="edit-transfer-modal" class="modal">
+        <div class="card modal-content">
+            <h3>แก้ไขข้อมูลการโอนย้าย</h3>
+            <div class="error-message" id="edit-transfer-error" style="display: none;"></div>
+            <form id="edit-transfer-form">
+                <input type="hidden" id="edit-transfer-id">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="edit-product">สินค้า</label>
+                        <input type="text" id="edit-product" name="edit-product" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-quantity">จำนวนที่โอนย้าย</label>
+                        <input type="number" id="edit-quantity" name="edit-quantity" min="1" required>
+                        <div class="error-message" id="edit-quantity-error" style="display: none;"></div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="edit-from-location">ตำแหน่งต้นทาง</label>
+                        <input type="text" id="edit-from-location" name="edit-from-location" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-to-location">ตำแหน่งปลายทาง</label>
+                        <input type="text" id="edit-to-location" name="edit-to-location" readonly>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="edit-notes">หมายเหตุ</label>
+                    <input type="text" id="edit-notes" name="edit-notes">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-cancel" onclick="closeEditModal()">ยกเลิก</button>
+                    <button type="submit" class="btn">บันทึก</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<script src="/js/main.js"></script>
+<script src="/js/transfers.js"></script>
+</body>
+</html>

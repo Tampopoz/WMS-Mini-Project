@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>จัดการการส่งออกสินค้า - WMS</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+</head>
+<body>
+<header>
+    <nav>
+        <h1>WMS - Warehouse Management System</h1>
+        <div class="nav-links">
+            <a href="/index.html">หน้าหลัก</a>
+            <a href="/admin/users.html" id="admin-link" style="display: none;">จัดการผู้ใช้งาน</a>
+            <a href="/products.html">จัดการสินค้า</a>
+            <a href="/locations.html">จัดการตำแหน่งจัดเก็บ</a>
+            <a href="/inbound.html">รับสินค้าเข้าคลัง</a>
+            <a href="/outbound.html">ส่งออกสินค้า</a>
+            <a href="/transfers.html">โอนย้ายสินค้า</a>
+            <a href="#" id="logout-btn">ออกจากระบบ</a>
+        </div>
+    </nav>
+</header>
+
+<main class="container">
+    <h2>จัดการการส่งออกสินค้าจากคลัง</h2>
+
+    <div class="card">
+        <div class="search-container">
+            <h3>ประวัติการส่งออกสินค้า</h3>
+            <div class="actions-bar">
+                <input type="text" id="search-keyword" placeholder="ค้นหาตามชื่อลูกค้า/เลขที่ออเดอร์">
+                <button class="btn" onclick="searchOutboundLogs()">ค้นหา</button>
+                <button class="btn" onclick="loadOutboundLogs()">แสดงทั้งหมด</button>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table id="outbound-table">
+                <thead>
+                <tr>
+                    <th>สินค้า</th>
+                    <th>จำนวน</th>
+                    <th>ลูกค้า</th>
+                    <th>เลขที่ออเดอร์</th>
+                    <th>วันที่ส่งออก</th>
+                    <th>ผู้ดำเนินการ</th>
+                    <th>หมายเหตุ</th>
+                    <th>การจัดการ</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- ข้อมูลการส่งออกสินค้าจะถูกโหลดที่นี่ -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>บันทึกการส่งออกสินค้าใหม่</h3>
+        <div class="error-message" id="add-outbound-error" style="display: none;"></div>
+        <form id="add-outbound-form">
+            <div class="form-group">
+                <label for="product-select">เลือกสินค้า</label>
+                <select id="product-select" onchange="handleProductSelect()">
+                    <option value="">-- เลือกสินค้า --</option>
+                    <!-- ตัวเลือกสินค้าจะถูกโหลดจาก JavaScript -->
+                </select>
+                <div class="error-message" id="product-select-error" style="display: none;"></div>
+            </div>
+
+            <div id="product-details" style="display: none;">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="product">สินค้า</label>
+                        <input type="hidden" id="product-id" name="product-id">
+                        <input type="text" id="product" name="product" readonly>
+                        <div class="error-message" id="product-error" style="display: none;"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>จำนวนคงเหลือปัจจุบัน</label>
+                        <input type="text" id="current-stock" readonly>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>ตำแหน่งปัจจุบัน</label>
+                    <input type="text" id="current-location" readonly>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="quantity">จำนวนที่ส่งออก</label>
+                    <input type="number" id="quantity" name="quantity" min="1" required>
+                    <div class="error-message" id="quantity-error" style="display: none;"></div>
+                </div>
+                <div class="form-group">
+                    <label for="customer">ลูกค้า</label>
+                    <input type="text" id="customer" name="customer" required maxlength="100">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="order-number">เลขที่ออเดอร์</label>
+                    <input type="text" id="order-number" name="order-number" required maxlength="50">
+                </div>
+                <div class="form-group">
+                    <label for="outbound-date">วันที่ส่งออก</label>
+                    <input type="datetime-local" id="outbound-date" name="outbound-date" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="notes">หมายเหตุ</label>
+                <textarea id="notes" name="notes" rows="2" maxlength="500"></textarea>
+            </div>
+            <button type="submit" class="btn">บันทึกการส่งออกสินค้า</button>
+        </form>
+    </div>
+
+    <!-- แก้ไขข้อมูลการส่งออกสินค้า Modal -->
+    <div id="edit-outbound-modal" class="modal">
+        <div class="card modal-content">
+            <h3>แก้ไขข้อมูลการส่งออกสินค้า</h3>
+            <div class="error-message" id="edit-outbound-error" style="display: none;"></div>
+            <form id="edit-outbound-form">
+                <input type="hidden" id="edit-outbound-id">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="edit-product">สินค้า</label>
+                        <input type="text" id="edit-product" name="edit-product" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-quantity">จำนวนที่ส่งออก</label>
+                        <input type="number" id="edit-quantity" name="edit-quantity" min="1" required>
+                        <div class="error-message" id="edit-quantity-error" style="display: none;"></div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="edit-customer">ลูกค้า</label>
+                        <input type="text" id="edit-customer" name="edit-customer" required maxlength="100">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-order-number">เลขที่ออเดอร์</label>
+                        <input type="text" id="edit-order-number" name="edit-order-number" required maxlength="50">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="edit-outbound-date">วันที่ส่งออก</label>
+                    <input type="datetime-local" id="edit-outbound-date" name="edit-outbound-date" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-notes">หมายเหตุ</label>
+                    <textarea id="edit-notes" name="edit-notes" rows="2" maxlength="500"></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-cancel" onclick="closeEditModal()">ยกเลิก</button>
+                    <button type="submit" class="btn">บันทึก</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<script src="/js/main.js"></script>
+<script src="/js/outbound.js"></script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+/* ลิงก์ */
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    padding: 5px 0;
+    transition: opacity 0.3s;
+}
+
+.nav-links a:hover {
+    opacity: 0.8;
+}
+
+.navbar-logo {
+    font-size: 26px;
+    font-weight: 700;
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    letter-spacing: 1px;
+}
+
+.navbar-logo:hover {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.navbar-links {
+    display: flex;
+    gap: 25px;
+    margin-left: auto;
+    justify-content: flex-end;
+}
+
+.navbar-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.navbar-links a:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.navbar-links a.active {
+    background-color: rgba(255, 255, 255, 0.2);
+    font-weight: 600;
+}
+
+/* ลิงก์ด้านล่าง */
+.auth-link-container {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 15px;
+    color: #4a5568;
+}
+
+.auth-link-container a {
+    color: #3182ce;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+    padding-bottom: 2px;
+    border-bottom: 1px dashed #3182ce;
+}
+
+.auth-link-container a:hover {
+    color: #2b6cb0;
+    border-bottom-style: solid;
+}
+
+/* ลิงก์ดูทั้งหมด */
+.view-all-link {
+    text-align: right;
+    margin-top: 10px;
+}
+
+.view-all-link a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.view-all-link a:hover {
+    text-decoration: underline;
+}
+
+/* ข้อความกำลังโหลด */
+.loading-text {
+    text-align: center;
+    color: #6c757d;
+    font-style: italic;
+}

@@ -1,0 +1,87 @@
+/* การ์ด */
+.card {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+}
+
+/* สถิติแดชบอร์ด */
+.stat-card {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: var(--spacing-lg);
+    text-align: center;
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--box-shadow-hover);
+}
+
+.stat-card h3 {
+    margin-top: 0;
+    color: var(--text-color);
+    font-size: var(--font-size-lg);
+}
+
+.stat-card .number {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin: var(--spacing-sm) 0;
+}
+
+/* การ์ดสำหรับฟอร์มยืนยันตัวตน */
+.auth-card {
+    max-width: 450px;
+    margin: 50px auto;
+    border-radius: var(--border-radius-xl);
+    box-shadow: var(--box-shadow-lg);
+    padding: var(--spacing-xxl);
+    background-color: var(--card-bg);
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+    border: 1px solid var(--primary-shadow);
+}
+
+.auth-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px var(--primary-shadow);
+}
+
+/* หัวข้อในการ์ด */
+.auth-card h2 {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+    color: var(--text-dark);
+    font-size: var(--font-size-xxl);
+    font-weight: 700;
+    position: relative;
+    padding-bottom: 12px;
+}
+
+.auth-card h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(to right, var(--text-dark), var(--primary-light));
+    border-radius: var(--border-radius-sm);
+}
+
+@media (max-width: 768px) {
+    .card {
+        padding: var(--spacing-md);
+    }
+    
+    .auth-card {
+        max-width: 90%;
+        padding: var(--spacing-lg);
+    }
+}

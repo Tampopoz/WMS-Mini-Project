@@ -1,0 +1,112 @@
+/* คอนเทนเนอร์หลัก */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing-lg);
+}
+
+/* ส่วนหัวและการนำทาง */
+header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 1rem;
+    box-shadow: var(--box-shadow);
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-links {
+    display: flex;
+    gap: var(--spacing-lg);
+}
+
+/* เนื้อหาหลัก */
+main {
+    padding: var(--spacing-lg) 0;
+}
+
+/* แถบนำทาง (Navbar) */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(90deg, var(--text-dark), var(--primary-light));
+    padding: var(--spacing-md) var(--spacing-xl);
+    box-shadow: var(--box-shadow);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* แบบฟอร์มแถว */
+.form-row {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.form-row .form-group {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+/* ส่วนค้นหาและกรอง */
+.search-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+    flex-wrap: wrap;
+}
+
+.actions-bar {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin: var(--spacing-sm) 0;
+    flex-wrap: wrap;
+}
+
+/* ตารางที่ตอบสนองต่อขนาดหน้าจอ */
+.table-responsive {
+    overflow-x: auto;
+}
+
+/* การตอบสนองต่อขนาดหน้าจอ */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+    }
+
+    .nav-links {
+        margin-top: var(--spacing-sm);
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    .navbar {
+        padding: var(--spacing-md) var(--spacing-lg);
+    }
+}
+
+/* ปรับแต่งสำหรับการแสดงผลบนมือถือ */
+@media (max-width: 576px) {
+    .custom-alert-container {
+        max-width: 90%;
+        margin: 100px auto;
+    }
+    
+    .modal-content {
+        max-width: 90%;
+        margin: 70px auto;
+        padding: var(--spacing-md);
+    }
+}

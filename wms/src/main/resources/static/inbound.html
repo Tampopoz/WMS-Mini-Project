@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>จัดการการรับสินค้า - WMS</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+</head>
+<body>
+<header>
+  <nav>
+    <h1>WMS - Warehouse Management System</h1>
+    <div class="nav-links">
+      <a href="/index.html">หน้าหลัก</a>
+      <a href="/admin/users.html" id="admin-link" style="display: none;">จัดการผู้ใช้งาน</a>
+      <a href="/products.html">จัดการสินค้า</a>
+      <a href="/locations.html">จัดการตำแหน่งจัดเก็บ</a>
+      <a href="/inbound.html">รับสินค้าเข้าคลัง</a>
+      <a href="/outbound.html">ส่งออกสินค้า</a>
+      <a href="/transfers.html">โอนย้ายสินค้า</a>
+      <a href="#" id="logout-btn">ออกจากระบบ</a>
+    </div>
+  </nav>
+</header>
+
+<main class="container">
+  <h2>จัดการการรับสินค้าเข้าคลัง</h2>
+
+  <div class="card">
+    <div class="search-container">
+      <h3>ประวัติการรับสินค้า</h3>
+      <div class="actions-bar">
+        <input type="text" id="search-keyword" placeholder="ค้นหา(ชื่อผู้จัดส่ง)">
+        <button class="btn" onclick="searchInboundLogs()">ค้นหา</button>
+        <button class="btn" onclick="loadInboundLogs()">แสดงทั้งหมด</button>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table id="inbound-table">
+        <thead>
+        <tr>
+          <th>สินค้า</th>
+          <th>รายละเอียด</th>
+          <th>จำนวน</th>
+          <th>ผู้จัดส่ง</th>
+          <th>เลขที่ใบส่งสินค้า</th>
+          <th>วันที่รับ</th>
+          <th>ผู้รับ</th>
+          <th>การจัดการ</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- ข้อมูลการรับสินค้าจะถูกโหลดที่นี่ -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>บันทึกการรับสินค้าใหม่</h3>
+    <div class="error-message" id="add-inbound-error" style="display: none;"></div>
+    <form id="add-inbound-form">
+      <div class="form-group">
+        <label for="product-select">เลือกสินค้า</label>
+        <select id="product-select" onchange="handleProductSelect()">
+          <option value="">-- เลือกสินค้า --</option>
+          <option value="new">++ เพิ่มสินค้า ++</option>
+          <!-- ตัวเลือกสินค้าจะถูกโหลดจาก JavaScript -->
+        </select>
+        <div class="error-message" id="product-select-error" style="display: none;"></div>
+      </div>
+
+      <div id="existing-product" style="display: none;">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="product">สินค้า</label>
+            <input type="hidden" id="product-id" name="product-id">
+            <input type="text" id="product" name="product" readonly>
+            <div class="error-message" id="product-error" style="display: none;"></div>
+          </div>
+          <div class="form-group">
+            <label>จำนวนคงเหลือปัจจุบัน</label>
+            <input type="text" id="current-stock" readonly>
+          </div>
+        </div>
+      </div>
+
+      <div id="new-product" style="display: none;">
+        <div class="form-group">
+          <label for="new-product-name">ชื่อสินค้า</label>
+          <input type="text" id="new-product-name" name="new-product-name" required maxlength="100">
+          <div class="error-message" id="new-product-name-error" style="display: none;"></div>
+        </div>
+        <div class="form-group">
+          <label for="new-product-desc">รายละเอียด</label>
+          <textarea id="new-product-desc" name="new-product-desc" rows="2" maxlength="500"></textarea>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="quantity">จำนวนที่รับ</label>
+          <input type="number" id="quantity" name="quantity" min="1" required>
+          <div class="error-message" id="quantity-error" style="display: none;"></div>
+        </div>
+        <div class="form-group">
+          <label for="supplier">ผู้จัดส่ง</label>
+          <input type="text" id="supplier" name="supplier" required maxlength="100">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="reference">เลขที่ใบส่งสินค้า</label>
+          <input type="text" id="reference" name="reference" required maxlength="50">
+        </div>
+        <div class="form-group">
+          <label for="receivedDate">วันที่รับสินค้า</label>
+          <input type="datetime-local" id="receivedDate" name="receivedDate" required>
+        </div>
+      </div>
+      <button type="submit" class="btn">บันทึกการรับสินค้า</button>
+    </form>
+  </div>
+
+  <!-- แก้ไขข้อมูลการรับสินค้า Modal -->
+  <div id="edit-inbound-modal" class="modal">
+    <div class="card modal-content">
+      <h3>แก้ไขข้อมูลการรับสินค้า</h3>
+      <div class="error-message" id="edit-inbound-error" style="display: none;"></div>
+      <form id="edit-inbound-form">
+        <input type="hidden" id="edit-inbound-id">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="edit-product">สินค้า</label>
+            <input type="text" id="edit-product" name="edit-product" readonly>
+          </div>
+          <div class="form-group">
+            <label for="edit-quantity">จำนวนที่รับ</label>
+            <input type="number" id="edit-quantity" name="edit-quantity" min="1" required>
+            <div class="error-message" id="edit-quantity-error" style="display: none;"></div>
+          </div>
+        </div>
+        <!-- เพิ่มฟิลด์รายละเอียดสินค้า -->
+        <div class="form-group">
+          <label for="edit-product-desc">รายละเอียดสินค้า</label>
+          <textarea id="edit-product-desc" name="edit-product-desc" rows="2" maxlength="500"></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="edit-supplier">ผู้จัดส่ง</label>
+            <input type="text" id="edit-supplier" name="edit-supplier" required maxlength="100">
+          </div>
+          <div class="form-group">
+            <label for="edit-reference">เลขที่ใบส่งสินค้า</label>
+            <input type="text" id="edit-reference" name="edit-reference" required maxlength="50">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="edit-date">วันที่รับ</label>
+          <input type="datetime-local" id="edit-date" name="edit-date" required>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-cancel" onclick="closeEditModal()">ยกเลิก</button>
+          <button type="submit" class="btn">บันทึก</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
+
+<script src="/js/main.js"></script>
+<script src="/js/inbound.js"></script>
+</body>
+</html>

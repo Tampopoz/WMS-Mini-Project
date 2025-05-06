@@ -1,0 +1,43 @@
+/* Reset CSS - ล้างค่าเริ่มต้นของทุกอิลิเมนต์ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ตั้งค่าพื้นฐานสำหรับทั้งเว็บไซต์ */
+body {
+    font-family: var(--font-family);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+/* หัวข้อ */
+h2 {
+    margin-bottom: var(--spacing-lg);
+    color: var(--text-color);
+}
+
+h3 {
+    margin-bottom: var(--spacing-md);
+}
+
+/* ปุ่มพื้นฐาน */
+button {
+    font-family: var(--font-family);
+}
+
+/* กำหนดฟอนต์สำหรับ input ประเภทวันที่และเวลา */
+input[type="date"],
+input[type="datetime-local"],
+input[type="time"] {
+    font-family: var(--font-family) !important;
+    font-size: var(--font-size-sm);
+}
+
+/* แอนิเมชั่นพื้นฐาน */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}

@@ -1,0 +1,80 @@
+/* ปุ่ม */
+.btn {
+    display: inline-block;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: var(--font-size-sm);
+    box-shadow: 0 2px 4px var(--primary-shadow);
+    font-weight: 500;
+}
+
+.btn:hover {
+    background-color: var(--primary-dark);
+    box-shadow: 0 4px 8px var(--primary-shadow);
+    transform: translateY(-1px);
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    color: white;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 4px var(--danger-shadow, rgba(220, 53, 69, 0.3));
+    transition: all 0.3s ease;
+    font-weight: 500;
+    border: none;
+}
+
+.btn-danger:hover {
+    background-color: var(--danger-dark);
+    box-shadow: 0 4px 8px var(--danger-shadow, rgba(220, 53, 69, 0.4));
+    transform: translateY(-1px);
+}
+
+.btn-confirm {
+    background-color: var(--success-color);
+}
+
+.btn-confirm:hover {
+    background-color: var(--success-dark);
+}
+
+/* ปุ่มยกเลิกใน Modal */
+.btn-cancel {
+    background-color: var(--secondary-color);
+}
+
+.btn-cancel:hover {
+    background-color: var(--secondary-dark);
+}
+
+/* ปุ่มในส่วนการจัดการ */
+.actions {
+    display: flex;
+    gap: var(--spacing-xs);
+    flex-wrap: wrap;
+}
+
+/* เมนูลัด */
+.action-btn {
+    display: block;
+    background-color: var(--primary-color);
+    color: white;
+    text-align: center;
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.action-btn:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-3px);
+    box-shadow: var(--box-shadow);
+}

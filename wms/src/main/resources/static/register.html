@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ลงทะเบียน - WMS</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar">
+  <a href="/" class="navbar-logo">
+    <span>WMS</span>
+  </a>
+  <div class="navbar-links">
+    <a href="/login.html">เข้าสู่ระบบ</a>
+    <a href="/register.html" class="active">ลงทะเบียน</a>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="card auth-card register-card">
+    <h2>ลงทะเบียนผู้ดูแลระบบใหม่</h2>
+    <div class="error-message" id="register-error" style="display: none;"></div>
+    <form id="register-form">
+      <div class="form-group">
+        <label for="username">ชื่อผู้ใช้ (3-10 ตัวอักษร)</label>
+        <input type="text" id="username" name="username" required minlength="3" maxlength="10">
+        <div class="error-message" id="username-error" style="display: none;"></div>
+      </div>
+      <div class="form-group">
+        <label for="password">รหัสผ่าน (อย่างน้อย 6 ตัวอักษร)</label>
+        <input type="password" id="password" name="password" required minlength="6">
+        <div class="error-message" id="password-error" style="display: none;"></div>
+      </div>
+      <div class="form-group">
+        <label for="fullName">ชื่อ-นามสกุล</label>
+        <input type="text" id="fullName" name="fullName" required>
+        <div class="error-message" id="fullName-error" style="display: none;"></div>
+      </div>
+      <div class="form-group">
+        <label for="role-display">ตำแหน่ง</label>
+        <input type="text" id="role-display" value="ผู้ดูแลระบบ" readonly>
+        <input type="hidden" id="role" name="role" value="ADMIN">
+      </div>
+      <button type="submit" class="btn">ลงทะเบียน</button>
+    </form>
+    <p class="auth-link-container">
+      มีบัญชีอยู่แล้ว? <a href="/login.html">เข้าสู่ระบบ</a>
+    </p>
+  </div>
+</div>
+
+<script src="/js/main.js"></script>
+<script src="/js/auth.js"></script>
+</body>
+</html>

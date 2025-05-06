@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>จัดการตำแหน่งจัดเก็บ - WMS</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+</head>
+<body>
+<header>
+    <nav>
+        <h1>WMS - Warehouse Management System</h1>
+        <div class="nav-links">
+            <a href="/index.html">หน้าหลัก</a>
+            <a href="/admin/users.html" id="admin-link" style="display: none;">จัดการผู้ใช้งาน</a>
+            <a href="/products.html">จัดการสินค้า</a>
+            <a href="/locations.html">จัดการตำแหน่งจัดเก็บ</a>
+            <a href="/inbound.html">รับสินค้าเข้าคลัง</a>
+            <a href="/outbound.html">ส่งออกสินค้า</a>
+            <a href="/transfers.html">โอนย้ายสินค้า</a>
+            <a href="#" id="logout-btn">ออกจากระบบ</a>
+        </div>
+    </nav>
+</header>
+
+<main class="container">
+    <h2>จัดการตำแหน่งจัดเก็บ</h2>
+
+    <div class="card">
+        <div class="search-container">
+            <h3>รายการตำแหน่งจัดเก็บ</h3>
+            <div class="actions-bar">
+                <input type="text" id="search-keyword" placeholder="ค้นหา(ชื่อตำแหน่ง)">
+                <button class="btn" onclick="searchLocations()">ค้นหา</button>
+                <button class="btn" onclick="showAvailableOnly()">ตำแหน่งว่าง</button>
+                <button class="btn" onclick="loadLocations()">แสดงทั้งหมด</button>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table id="locations-table">
+                <thead>
+                <tr>
+                    <th>ชื่อตำแหน่ง</th>
+                    <th>ประเภท</th>
+                    <th>โซน</th>
+                    <th>แถว</th>
+                    <th>ชั้น</th>
+                    <th>ตำแหน่ง</th>
+                    <th>ความจุ</th>
+                    <th>ใช้ไปแล้ว</th>
+                    <th>คงเหลือ</th>
+                    <th>สถานะ</th>
+                    <th>การจัดการ</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Location data will be loaded here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>เพิ่มตำแหน่งจัดเก็บใหม่</h3>
+        <div class="error-message" id="add-location-error" style="display: none;"></div>
+        <form id="add-location-form">
+            <div class="form-group">
+                <label for="name">ชื่อตำแหน่ง</label>
+                <input type="text" id="name" name="name" required readonly>
+                <div class="error-message" id="name-error" style="display: none;"></div>
+                <small>ชื่อตำแหน่งจะถูกสร้างอัตโนมัติจากโซน ชั้น และตำแหน่ง</small>
+            </div>
+            <div class="form-group">
+                <label for="type">ประเภท</label>
+                <select id="type" name="type" required>
+                    <option value="">-- เลือกประเภท --</option>
+                    <option value="ชั้นวาง">ชั้นวาง</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="zone">โซน</label>
+                    <select id="zone" name="zone" required>
+                        <option value="">-- เลือกโซน --</option>
+                        <!-- โซน A-Z จะถูกเติมด้วย JavaScript -->
+                    </select>
+                    <div class="error-message" id="zone-error" style="display: none;"></div>
+                </div>
+                <div class="form-group">
+                    <label for="row">แถว</label>
+                    <select id="row" name="row" required>
+                        <option value="">-- เลือกแถว --</option>
+                    </select>
+                    <div class="error-message" id="row-error" style="display: none;"></div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="level">ชั้น</label>
+                    <select id="level" name="level" required>
+                        <option value="">-- เลือกชั้น --</option>
+                        <option value="1">ชั้น 1</option>
+                        <option value="2">ชั้น 2</option>
+                        <option value="3">ชั้น 3</option>
+                        <option value="4">ชั้น 4</option>
+                    </select>
+                    <div class="error-message" id="level-error" style="display: none;"></div>
+                </div>
+                <div class="form-group">
+                    <label for="position">ตำแหน่ง</label>
+                    <select id="position" name="position" required>
+                        <option value="">-- เลือกตำแหน่ง --</option>
+                    </select>
+                    <div class="error-message" id="position-error" style="display: none;"></div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="capacity">ความจุ</label>
+                    <input type="number" id="capacity" name="capacity" min="0" value="100" required>
+                    <div class="error-message" id="capacity-error" style="display: none;"></div>
+                </div>
+                <div class="form-group">
+                    <label for="currentUtilization">ใช้ไปแล้ว</label>
+                    <input type="number" id="currentUtilization" name="currentUtilization" min="0" max="100" value="0" required>
+                    <div class="error-message" id="currentUtilization-error" style="display: none;"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="status">สถานะ</label>
+                <select id="status" name="status">
+                    <option value="พร้อมใช้งาน">พร้อมใช้งาน</option>
+                    <option value="กำลังซ่อมบำรุง">กำลังซ่อมบำรุง</option>
+                    <option value="ไม่พร้อมใช้งาน">ไม่พร้อมใช้งาน</option>
+                </select>
+            </div>
+            <button type="submit" class="btn">เพิ่มตำแหน่งจัดเก็บ</button>
+        </form>
+    </div>
+
+    <!-- แก้ไขตำแหน่งจัดเก็บ Modal -->
+    <div id="edit-location-modal" class="modal">
+        <div class="card modal-content">
+            <h3>แก้ไขข้อมูลตำแหน่งจัดเก็บ</h3>
+            <div class="error-message" id="edit-location-error" style="display: none;"></div>
+            <form id="edit-location-form">
+                <input type="hidden" id="edit-location-id">
+                <div class="form-group">
+                    <label for="edit-name">ชื่อตำแหน่ง</label>
+                    <input type="text" id="edit-name" name="edit-name" required readonly>
+                    <div class="error-message" id="edit-name-error" style="display: none;"></div>
+                    <small>ชื่อตำแหน่งจะถูกสร้างอัตโนมัติจากโซน ชั้น และตำแหน่ง</small>
+                </div>
+                <div class="form-group">
+                    <label for="edit-type">ประเภท</label>
+                    <input type="text" id="edit-type" name="edit-type" required readonly>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="edit-zone">โซน</label>
+                        <input type="text" id="edit-zone" name="edit-zone" required readonly>
+                        <div class="error-message" id="edit-zone-error" style="display: none;"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-row">แถว</label>
+                        <input type="text" id="edit-row" name="edit-row" required readonly>
+                        <div class="error-message" id="edit-row-error" style="display: none;"></div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="edit-level">ชั้น</label>
+                        <input type="text" id="edit-level" name="edit-level" required readonly>
+                        <div class="error-message" id="edit-level-error" style="display: none;"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-position">ตำแหน่ง</label>
+                        <input type="text" id="edit-position" name="edit-position" required readonly>
+                        <div class="error-message" id="edit-position-error" style="display: none;"></div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="edit-capacity">ความจุ</label>
+                        <input type="number" id="edit-capacity" name="edit-capacity" min="0" required>
+                        <div class="error-message" id="edit-capacity-error" style="display: none;"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-currentUtilization">ใช้ไปแล้ว</label>
+                        <input type="number" id="edit-currentUtilization" name="edit-currentUtilization" min="0" required readonly>
+                        <div class="error-message" id="edit-currentUtilization-error" style="display: none;"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="edit-status">สถานะ</label>
+                    <select id="edit-status" name="edit-status">
+                        <option value="พร้อมใช้งาน">พร้อมใช้งาน</option>
+                        <option value="กำลังซ่อมบำรุง">กำลังซ่อมบำรุง</option>
+                        <option value="ไม่พร้อมใช้งาน">ไม่พร้อมใช้งาน</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-cancel" onclick="closeEditModal()">ยกเลิก</button>
+                    <button type="submit" class="btn">บันทึก</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<script src="/js/main.js"></script>
+<script src="/js/locations.js"></script>
+</body>
+</html>

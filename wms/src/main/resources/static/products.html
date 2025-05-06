@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>จัดการสินค้า - WMS</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+</head>
+<body>
+<header>
+    <nav>
+        <h1>WMS - Warehouse Management System</h1>
+        <div class="nav-links">
+            <a href="/index.html">หน้าหลัก</a>
+            <a href="/admin/users.html" id="admin-link" style="display: none;">จัดการผู้ใช้งาน</a>
+            <a href="/products.html">จัดการสินค้า</a>
+            <a href="/locations.html">จัดการตำแหน่งจัดเก็บ</a>
+            <a href="/inbound.html">รับสินค้าเข้าคลัง</a>
+            <a href="/outbound.html">ส่งออกสินค้า</a>
+            <a href="/transfers.html">โอนย้ายสินค้า</a>
+            <a href="#" id="logout-btn">ออกจากระบบ</a>
+        </div>
+    </nav>
+</header>
+
+<main class="container">
+    <h2>จัดการสินค้า</h2>
+
+    <div class="card">
+        <div class="search-container">
+            <h3>รายการสินค้า</h3>
+            <div class="actions-bar">
+                <input type="text" id="search-keyword" placeholder="ค้นหา(ชื่อสินค้า)">
+                <button class="btn" onclick="searchProducts()">ค้นหา</button>
+                <button class="btn" onclick="showLowStockOnly()">สินค้าใกล้หมด</button>
+                <button class="btn" onclick="loadProducts()">แสดงทั้งหมด</button>
+                <a href="/inbound.html" class="btn">เพิ่มสินค้าใหม่</a>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table id="products-table">
+                <thead>
+                <tr>
+                    <th>ชื่อสินค้า</th>
+                    <th>รายละเอียด</th>
+                    <th>จำนวน</th>
+                    <th>ตำแหน่ง</th>
+                    <th>จำนวนขั้นต่ำ</th>
+                    <th>การจัดการ</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Product data will be loaded here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- แก้ไขสินค้า Modal -->
+    <div id="edit-product-modal" class="modal">
+        <div class="card modal-content">
+            <h3>แก้ไขข้อมูลสินค้า</h3>
+            <div class="error-message" id="edit-product-error" style="display: none;"></div>
+            <form id="edit-product-form">
+                <input type="hidden" id="edit-product-id">
+                <div class="form-group">
+                    <label for="edit-name">ชื่อสินค้า</label>
+                    <input type="text" id="edit-name" name="edit-name" required maxlength="100">
+                    <div class="error-message" id="edit-name-error" style="display: none;"></div>
+                </div>
+                <div class="form-group">
+                    <label for="edit-description">รายละเอียด</label>
+                    <textarea id="edit-description" name="edit-description" rows="3" maxlength="500"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="edit-quantity">จำนวน</label>
+                    <input type="number" id="edit-quantity" name="edit-quantity" min="0" required>
+                    <div class="error-message" id="edit-quantity-error" style="display: none;"></div>
+                </div>
+                <div class="form-group">
+                    <label for="edit-location">ตำแหน่ง</label>
+                    <select id="edit-location" name="edit-location">
+                        <option value="">-- เลือกตำแหน่ง --</option>
+                        <!-- ตำแหน่งจะถูกโหลดด้วย JavaScript -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="edit-minimumStock">จำนวนขั้นต่ำ</label>
+                    <input type="number" id="edit-minimumStock" name="edit-minimumStock" min="0" required>
+                    <div class="error-message" id="edit-minimumStock-error" style="display: none;"></div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-cancel" onclick="closeEditModal()">ยกเลิก</button>
+                    <button type="submit" class="btn">บันทึก</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<script src="/js/main.js"></script>
+<script src="/js/products.js"></script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+/* ฟอร์ม */
+.form-group {
+    margin-bottom: var(--spacing-md);
+}
+
+label {
+    display: block;
+    margin-bottom: var(--spacing-xs);
+    font-weight: 500;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="number"],
+select,
+textarea {
+    width: 100%;
+    padding: var(--spacing-sm);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    transition: border-color var(--transition-speed);
+    font-family: inherit;
+    font-size: var(--font-size-sm);
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+/* ข้อความแสดงข้อผิดพลาด */
+.error-message {
+    color: var(--danger-color);
+    font-size: 0.9rem;
+    margin-top: var(--spacing-xs);
+}
+
+/* ป้ายกำกับ (Label) สำหรับฟอร์มยืนยันตัวตน */
+.auth-card label {
+    display: block;
+    margin-bottom: var(--spacing-sm);
+    font-weight: 500;
+    color: var(--text-light);
+    font-size: var(--font-size-md);
+    transition: color var(--transition-speed);
+}
+
+.form-group:focus-within label {
+    color: var(--text-dark);
+}
+
+/* อินพุต (Input) สำหรับฟอร์มยืนยันตัวตน */
+.auth-card input[type="text"],
+.auth-card input[type="password"],
+.auth-card select {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1.5px solid var(--input-border);
+    border-radius: var(--border-radius-lg);
+    font-size: var(--font-size-md);
+    transition: all var(--transition-speed);
+    background-color: var(--input-bg);
+}
+
+.auth-card input[type="text"]:focus,
+.auth-card input[type="password"]:focus,
+.auth-card select:focus {
+    border-color: var(--input-border-focus);
+    box-shadow: 0 0 0 4px var(--input-shadow-focus);
+    background-color: var(--input-bg-focus);
+    outline: none;
+}
+
+.actions-bar input,
+.actions-bar select {
+    width: auto;
+}

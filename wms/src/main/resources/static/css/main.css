@@ -1,0 +1,24 @@
+/* นำเข้าไฟล์ CSS ทั้งหมด */
+
+/* Theme */
+@import url('/css/variables.css');
+
+/* Base */
+@import url('/css/reset.css');
+
+/* Layout */
+@import url('/css/layout.css');
+
+/* Components */
+@import url('/css/buttons.css');
+@import url('/css/forms.css');
+@import url('/css/tables.css');
+@import url('/css/cards.css');
+@import url('/css/modals.css');
+
+/* Utilities */
+@import url('/css/utilities.css');
+
+/* Pages */
+@import url('/css/dashboard.css');
+@import url('/css/auth.css');
